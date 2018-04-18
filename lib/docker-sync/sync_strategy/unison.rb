@@ -181,7 +181,7 @@ module DockerSync
           if exists == ''
             run_privileged = ''
             run_privileged = '--privileged' if @options.key?('max_inotify_watches') #TODO: replace by the minimum capabilities required
-            tz_expression = '-e TZ=$(basename $(dirname `readlink /etc/localtime`))/$(basename `readlink /etc/localtime`)'
+            tz_expression = '-e TZ=$(basename $(dirname `realpath /etc/localtime`))/$(basename `realpath /etc/localtime`)'
             say_status 'ok', 'Starting precopy', :white if @options['verbose']
             # we just run the precopy script and remove the container
             cmd = "docker run --rm -v \"#{volume_name}:#{@options['dest']}\" -e APP_VOLUME=#{@options['dest']} #{tz_expression} #{additional_docker_env} #{run_privileged} --name #{container_name} #{@docker_image} /usr/local/bin/precopy_appsync"
